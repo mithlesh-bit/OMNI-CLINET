@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>home</title>
+
+  <style>
+    .ellipsis-text-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 200px;
+      border: 1px solid #313131;
+      border-radius: 20px;
+      padding: 5px;
+      margin: 0 auto;
+    }
+
+    .ellipsis-text {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 5px;
+    }
+
+    .copy-button {
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+      /* Add margin to separate button from text field */
+    }
+  </style>
+
+
+
+
+</head>
+
+<body
+  x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+  x-init="
+         darkMode = JSON.parse(localStorage.getItem('darkMode'));
+         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+  :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}">
+  <!-- ===== Preloader Start ===== -->
+  <include src="./partials/preloader.html"></include>
+  <!-- ===== Preloader End ===== -->
+
+  <!-- ===== Page Wrapper Start ===== -->
+  <div class="flex h-screen overflow-hidden">
+    <!-- ===== Sidebar Start ===== -->
+    <include src="./partials/sidebar.html"></include>
+    <!-- ===== Sidebar End ===== -->
+
+    <!-- ===== Content Area Start ===== -->
+    <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <!-- ===== Header Start ===== -->
+      <include src="./partials/header.html" />
+      <!-- ===== Header End ===== -->
+
+      <!-- ===== Main Content Start ===== -->
+      <main>
+        <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+            <!-- Card Item Start -->
+
+            <div
+              class="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023" />
+                </svg>
+
+              </div>
+
+              <div class="mt-4 flex items-end justify-between">
+                <div>
+                  <h4 id="totalPages" class="text-title-md font-bold text-black dark:text-white">
+                    0
+                  </h4>
+                  <span class="text-sm font-medium">Total Pages</span>
+                </div>
+              </div>
+            </div>
+            <!-- Card Item End -->
+
+            <!-- Card Item Start -->
+            <div
+              class="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                    d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                </svg>
+
+              </div>
+
+              <div class="mt-4 flex items-end justify-between">
+                <div>
+                  <h4 id="totalUsers" class="text-title-md font-bold text-black dark:text-white">
+                    0
+                  </h4>
+                  <span class="text-sm font-medium">Total Users</span>
+                </div>
+
+
+              </div>
+            </div>
+            <!-- Card Item End -->
+
+            <!-- Card Item Start -->
+            <div
+              class="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                    d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z"
+                    clip-rule="evenodd" />
+                </svg>
+
+              </div>
+
+              <div class="mt-4 flex items-end justify-between">
+                <div>
+                  <h4 id="identifiedUsers" class="text-title-md font-bold text-black dark:text-white">
+                    0
+                  </h4>
+                  <span class="text-sm font-medium">Identified Users</span>
+                </div>
+
+                <!-- <span class="flex items-center gap-1 text-sm font-medium text-meta-3">
+                  2.59%
+                  <svg class="fill-meta-3" width="10" height="11" viewBox="0 0 10 11" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
+                      fill="" />
+                  </svg>
+                </span> -->
+              </div>
+            </div>
+            <!-- Card Item End -->
+
+            <!-- Card Item Start -->
+            <div
+              class="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 12h4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+
+
+              </div>
+
+              <div class="mt-4 flex items-end justify-between">
+                <div>
+                  <h4 id="unidentifiedUsers" class="text-title-md font-bold text-black dark:text-white">
+                    0
+                  </h4>
+                  <span class="text-sm font-medium">Undentified Users</span>
+                </div>
+
+                <!-- <span class="flex items-center gap-1 text-sm font-medium text-meta-5">
+                  0.95%
+                  <svg class="fill-meta-5" width="10" height="11" viewBox="0 0 10 11" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5.64284 7.69237L9.09102 4.33987L10 5.22362L5 10.0849L-8.98488e-07 5.22362L0.908973 4.33987L4.35716 7.69237L4.35716 0.0848701L5.64284 0.0848704L5.64284 7.69237Z"
+                      fill="" />
+                  </svg>
+                </span> -->
+              </div>
+            </div>
+            <!-- Card Item End -->
+          </div>
+
+          <div class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+            <!-- ====== Chart One Start -->
+            <include src="./partials/chart-01.html" />
+            <!-- ====== Chart One End -->
+
+            <!-- ====== Chart Two Start -->
+            <include src="./partials/chart-02.html" />
+            <!-- ====== Chart Two End -->
+
+            <!-- ====== Chart Three Start -->
+            <include src="./partials/chart-03.html" />
+            <!-- ====== Chart Three End -->
+
+            <!-- ====== Map One Start -->
+            <include src="./partials/map-01.html" />
+            <!-- ====== Map One End -->
+
+            <!-- ====== Table One Start -->
+            <div class="col-span-12 xl:col-span-8">
+              <include src="./partials/table-01.html" />
+            </div>
+            <!-- ====== Table One End -->
+
+            <!-- ====== Chat Card Start -->
+
+            <!-- <div
+              class="col-span-12 rounded-sm border border-stroke bg-white py-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
+              <h4 class="mb-6 px-7.5 text-xl font-bold text-black dark:text-white">
+                Chats
+              </h4>
+              <div class="ellipsis-text-container">
+                <div class="ellipsis-text" id="topUsers">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </div>
+                <button class="copy-button" onclick="copyText()">Copy</button>
+              </div>
+
+            </div> -->
+
+            <!-- ====== Chat Card End -->
+
+          </div>
+        </div>
+      </main>
+      <!-- ===== Main Content End ===== -->
+    </div>
+    <!-- ===== Content Area End ===== -->
+  </div>
+  <!-- ===== Page Wrapper End ===== -->
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        fetch('https://omni-server.onrender.com/api/home', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Failed to fetch user data');
+            }
+            return response.json();
+          })
+          .then(data => {
+            const totalPagesElement = document.getElementById('totalPages');
+            totalPagesElement.textContent = data.interaction.pages.length;
+
+            // Extract and display Total Users
+            const totalUsersElement = document.getElementById('totalUsers');
+            totalUsersElement.textContent = data.interaction.users.length;
+
+            // Count Identified Users and Unidentified Users
+            let identifiedUsersCount = 0;
+            let unidentifiedUsersCount = 0;
+            data.interaction.users.forEach(user => {
+              user.tokens.forEach(token => {
+                if (token.userSessionID === 'unidentifiedUser') {
+                  unidentifiedUsersCount++;
+                } else {
+                  identifiedUsersCount++;
+                }
+              });
+            });
+
+            // Display Identified Users and Unidentified Users
+            const identifiedUsersElement = document.getElementById('identifiedUsers');
+            identifiedUsersElement.textContent = identifiedUsersCount;
+
+            const unidentifiedUsersElement = document.getElementById('unidentifiedUsers');
+            unidentifiedUsersElement.textContent = unidentifiedUsersCount;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            // Handle errors or invalid token cases
+          });
+      } else {
+        console.log('No token found, displaying default data.');
+      }
+    });
+  </script>
+
+
+
+  <!-- <script>
+    function copyText() {
+      const textToCopy = document.querySelector('.ellipsis-text');
+      navigator.clipboard.writeText(textToCopy.textContent)
+        .then(() => {
+          alert('Text copied to clipboard!');
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+    }
+//   </script> -->
+  //
+</body>
+
+</html>

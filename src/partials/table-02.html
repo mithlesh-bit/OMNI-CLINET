@@ -1,0 +1,168 @@
+<div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+  <div class="px-4 py-6 md:px-6 xl:px-7.5">
+    <h4 class="text-xl font-bold text-black dark:text-white">Top interacted Elements</h4>
+  </div>
+
+  <div
+    class="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+    <div class="col-span-3 flex items-center">
+      <p class="font-medium">Element Name</p>
+    </div>
+    <div class="col-span-2 hidden items-center sm:flex">
+      <p class="font-medium">Page Name</p>
+    </div>
+    <!-- <div class="col-span-1 flex items-center">
+      <p class="font-medium">Frequency</p>
+    </div> -->
+  </div>
+
+  <div class="interactions-table-container">
+    <!-- Table body will be appended here -->
+  </div>
+
+  <!-- Popup modal -->
+  <div class="modal" id="imageModal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      fetch('https://omni-server.onrender.com/api/home', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch user data');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const topInteractions = findTopInteractions(data.interaction.users, 10);
+          renderTopInteractions(topInteractions);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Handle errors or invalid token cases
+        });
+    } else {
+      console.log('No token found, displaying default data.');
+    }
+  });
+
+  function findTopInteractions(users, count) {
+    const interactionsCount = {};
+
+    // Iterate over each user's tokens and interaction details
+    users.forEach(user => {
+      user.tokens.forEach(token => {
+        token.interactionDetails.forEach(detail => {
+          const key = detail.text || detail.href || detail.src;
+          const pageName = detail.pageTitle || ''; // Extract pageName
+          interactionsCount[key] = interactionsCount[key] || {
+            count: 0,
+            pageName: pageName
+          };
+          interactionsCount[key].count++; // Increment interaction count
+        });
+      });
+    });
+
+    // Sort interactions by count in descending order
+    const sortedInteractions = Object.entries(interactionsCount)
+      .sort(([, interactionA], [, interactionB]) => interactionB.count - interactionA.count);
+
+    // Get top 10 interactions
+    return sortedInteractions.slice(0, count).map(([interaction, { count, pageName }], index) => ({
+      interaction: interaction,
+      count: count,
+      pageName: pageName
+    }));
+  }
+
+  function renderTopInteractions(interactions) {
+    const tableContainer = document.querySelector('.interactions-table-container');
+
+    // Check if table body already exists, if not create it
+    let tableBody = tableContainer.querySelector('tbody');
+    if (!tableBody) {
+      tableBody = document.createElement('tbody');
+    } else {
+      // Clear existing table body content
+      tableBody.innerHTML = '';
+    }
+
+    interactions.forEach((interaction, index) => {
+      const row = document.createElement('tr');
+
+      const rankCell = document.createElement('td');
+      rankCell.textContent = index + 1;
+      row.appendChild(rankCell);
+
+      const interactionCell = document.createElement('td');
+      interactionCell.style.textAlign = 'left'; // Align leftmost data
+      interactionCell.style.overflow = 'hidden';
+      interactionCell.style.textOverflow = 'ellipsis';
+      interactionCell.style.whiteSpace = 'nowrap';
+      interactionCell.style.padding = '0.5rem'; // Add padding
+      if (interaction.interaction.startsWith('http')) {
+        const img = document.createElement('img');
+        img.src = interaction.interaction;
+        img.alt = 'Image';
+        img.width = 30; // Set your desired width here
+        img.height = 30; // Set your desired height here
+        img.addEventListener('click', function () {
+          openModal(interaction.interaction);
+        });
+        interactionCell.appendChild(img);
+      } else {
+        interactionCell.textContent = interaction.interaction;
+      }
+      row.appendChild(interactionCell);
+
+      const pageNameCell = document.createElement('td');
+      pageNameCell.textContent = interaction.pageName;
+      pageNameCell.style.textAlign = 'center'; // Align center data
+      pageNameCell.style.overflow = 'hidden';
+      pageNameCell.style.textOverflow = 'ellipsis';
+      pageNameCell.style.whiteSpace = 'nowrap';
+      pageNameCell.style.padding = '0.5rem'; // Add padding
+      row.appendChild(pageNameCell);
+
+      const countCell = document.createElement('td');
+      countCell.textContent = interaction.count;
+      countCell.style.textAlign = 'right'; // Align rightmost data
+      countCell.style.overflow = 'hidden';
+      countCell.style.textOverflow = 'ellipsis';
+      countCell.style.whiteSpace = 'nowrap';
+      countCell.style.padding = '0.5rem'; // Add padding
+      row.appendChild(countCell);
+
+      tableBody.appendChild(row);
+    });
+
+    // Append or re-append the table body to the container
+    tableContainer.appendChild(tableBody);
+  }
+
+  // Popup functions
+  function openModal(imageUrl) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    modal.style.display = 'block';
+    modalImg.src = imageUrl;
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+  }
+</script>

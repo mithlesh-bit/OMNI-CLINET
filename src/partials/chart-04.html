@@ -1,0 +1,24 @@
+<div
+  class="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
+  <div>
+    <h3 class="text-xl font-bold text-black dark:text-white">
+      Monthly Interaction Analytics
+    </h3>
+  </div>
+  <div>
+    <div id="chartFour" class="-ml-5"></div>
+  </div>
+</div>
+
+<script>
+  // Get the current month name
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const currentDate = new Date();
+  const currentMonthName = months[currentDate.getMonth()];
+
+  // Update the text of the element
+  const monthlyInteractionAnalyticsText = document.querySelector('.col-span-12 .text-xl');
+  if (monthlyInteractionAnalyticsText) {
+    monthlyInteractionAnalyticsText.textContent = `${currentMonthName} Interaction Analytics`;
+  }
+</script>

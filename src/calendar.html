@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactions</title>
+</head>
+
+<body
+  x-data="{ page: 'calendar', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+  x-init="
+          darkMode = JSON.parse(localStorage.getItem('darkMode'));
+          $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+  :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}">
+  <!-- ===== Preloader Start ===== -->
+  <include src="./partials/preloader.html"></include>
+  <!-- ===== Preloader End ===== -->
+
+  <!-- ===== Page Wrapper Start ===== -->
+  <div class="flex h-screen overflow-hidden">
+    <!-- ===== Sidebar Start ===== -->
+    <include src="./partials/sidebar.html"></include>
+    <!-- ===== Sidebar End ===== -->
+
+    <!-- ===== Content Area Start ===== -->
+    <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <!-- ===== Header Start ===== -->
+      <include src="./partials/header.html" />
+      <!-- ===== Header End ===== -->
+
+      <!-- ===== Main Content Start ===== -->
+      <main class="mt-3">
+        <section class="container px-4 mx-auto">
+          <div class="flex flex-col">
+            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                  <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-800">
+                      <tr>
+                        <th scope="col"
+                          class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                          <div class="flex items-center gap-x-3">
+                            <button class="flex items-center gap-x-2">
+                              <span>Page Title </span>
+
+                              <svg class="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                  d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
+                                  fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                                <path
+                                  d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
+                                  fill="currentColor" stroke="currentColor" stroke-width="0.1" />
+                                <path
+                                  d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
+                                  fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                              </svg>
+                            </button>
+                          </div>
+                        </th>
+
+                        <th scope="col"
+                          class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                          Page Url
+                        </th>
+
+                        <th scope="col"
+                          class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                          Event Type
+                        </th>
+
+                        <th scope="col"
+                          class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                          Event Specifier
+                        </th>
+
+                        <th scope="col"
+                          class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                          Text/href/src
+                        </th>
+
+                        <th scope="col"
+                          class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                          User
+                        </th>
+
+                        <th scope="col"
+                          class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                          Date
+                        </th>
+
+                        <th scope="col"
+                          class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                          Browser
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="dataTable"
+                      class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                      <!-- Table data will be filled dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <!-- ===== Main Content End ===== -->
+    </div>
+    <!-- ===== Content Area End ===== -->
+  </div>
+  <!-- ===== Page Wrapper End ===== -->
+
+
+  <script>
+
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch("https://omni-server.onrender.com/api/home", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({}),
+        });
+        const responseData = await response.json();
+
+        return responseData;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        return null;
+      }
+    };
+
+    const renderData = async () => {
+      const data = await fetchData();
+      console.log("Fetched Data:", data); // Log the fetched data
+      if (!data) return;
+
+      const tableBody = document.getElementById("dataTable");
+      tableBody.innerHTML = "";
+
+      // Reverse the order of users array
+      const reversedUsers = data.interaction.users.slice().reverse();
+
+      // Loop through each user in reverse order
+      reversedUsers.forEach(user => {
+        console.log("User:", user); // Log each user
+
+        // If each user has tokens, loop through each token in reverse order
+        if (user.tokens && user.tokens.length > 0) {
+          user.tokens.slice().reverse().forEach(token => {
+            console.log("Token:", token); // Log each token
+
+            // For each token, loop through its interaction details
+            if (token.interactionDetails && token.interactionDetails.length > 0) {
+              token.interactionDetails.slice().reverse().forEach(detail => {
+                console.log("Detail:", detail); // Log each detail
+
+                const row = document.createElement("tr");
+                // Create and append table cells for each detail
+                const datehai = `(${detail.date})` + detail.ISTDateNum + "/" + detail.ISTMonth + "/" + "2024"
+                const dateCell = createDateCell(datehai);
+                const pageTitleCell = createCell(detail.pageTitle);
+                const pageUrlCell = createCell(detail.pageURL);
+                const eventTypeCell = createCell(detail.eventType);
+                const textHrefSrcCell = createTextHrefSrcCell(detail.text || detail.href || detail.src);
+                const userCell = createUserCell(token.userSessionID);
+                const browserCell = createBrowserCell(`${detail.browserName} +(${detail.browserVersion})`);
+                const eventSpecifierCell = createEventSpecifierCell(detail.className, detail.tag); // Create event specifier cell
+
+                row.appendChild(pageTitleCell);
+                row.appendChild(pageUrlCell);
+                row.appendChild(eventTypeCell);
+                row.appendChild(eventSpecifierCell); // Append event specifier cell
+                row.appendChild(textHrefSrcCell);
+                row.appendChild(userCell);
+                row.appendChild(dateCell);
+                row.appendChild(browserCell);
+
+                tableBody.appendChild(row);
+              });
+            }
+          });
+        }
+      });
+    };
+
+    const createCell = (text) => {
+      const cell = document.createElement("td");
+      cell.textContent = text || "-";
+      cell.classList.add("px-4", "py-3.5", "text-sm", "font-normal", "text-black", "dark:text-gray-200", "whitespace-nowrap", "relative");
+
+      if (text && text.length > 20) {
+        cell.classList.add("truncate");
+        const copyButton = createCopyButton(text);
+        cell.appendChild(copyButton);
+      }
+
+      return cell;
+    };
+
+    // Inside the <script> tag, add a new function to create cells for the event specifier column
+    const createEventSpecifierCell = (className, tag) => {
+      const cell = document.createElement("td");
+      const eventSpecifierText = className && tag ? `${className} - ${tag}` : "-"; // Combine className and tag if both are available
+
+      cell.textContent = eventSpecifierText;
+      cell.classList.add("px-4", "py-3.5", "text-sm", "font-normal", "text-black", "dark:text-gray-200", "whitespace-nowrap");
+
+      return cell;
+    };
+
+
+    const createUserCell = (userName) => {
+      const cell = document.createElement("td");
+      const truncatedUserName = userName.length > 20 ? userName.substring(0, 20) + "..." : userName;
+      const copyButton = createCopyButton(userName);
+
+      cell.textContent = truncatedUserName || "-";
+      cell.classList.add("px-4", "py-3.5", "text-sm", "font-normal", "text-black", "dark:text-gray-200", "whitespace-nowrap", "relative");
+      cell.appendChild(copyButton);
+
+      return cell;
+    };
+
+    const createDateCell = (date) => {
+      const cell = document.createElement("td");
+      cell.textContent = date || "-";
+      cell.classList.add("px-4", "py-3.5", "text-sm", "font-normal", "text-black", "dark:text-gray-200", "whitespace-nowrap");
+
+      return cell;
+    };
+    const createBrowserCell = (browser) => {
+      const cell = document.createElement("td");
+      cell.textContent = browser // Replace with actual browser if available
+      cell.classList.add("px-4", "py-3.5", "text-sm", "font-normal", "text-black", "dark:text-gray-200", "whitespace-nowrap");
+
+      return cell;
+    };
+
+    const createTextHrefSrcCell = (text) => {
+      const cell = document.createElement("td");
+      if (!text) {
+        text = ""; // Set text to an empty string if undefined
+      }
+
+      // Truncate text if it's longer than 20 characters
+      const truncatedText = text.length > 20 ? text.substring(0, 20) + '...' : text;
+
+      cell.classList.add("px-4", "py-3.5", "text-sm", "font-normal", "text-black", "dark:text-gray-200", "whitespace-nowrap", "relative");
+
+      if (text && text.length > 20) {
+        // If the original text is longer than 20 characters, add the full text to the copy button
+        const copyButton = createCopyButton(text);
+        copyButton.classList.remove("right-0"); // Remove the current class
+        copyButton.classList.add("right-1"); // Add the new class for reduced margin
+        cell.appendChild(copyButton);
+      }
+
+      // Create an image element if the text is a src attribute
+      if (text.startsWith("http") || text.endsWith(".jpg") || text.endsWith(".png") || text.endsWith(".gif")) {
+        const img = document.createElement("img");
+        img.src = text;
+        img.classList.add("w-6", "h-6", "mr-2"); // Adjust the size of the image as needed
+        cell.appendChild(img);
+      }
+
+      // Create a span element to display truncated text
+      const span = document.createElement("span");
+      span.textContent = truncatedText;
+      if (text && text.length > 20) {
+        span.classList.add("truncate");
+      }
+      cell.appendChild(span);
+
+      return cell;
+    };
+
+
+    const createCopyButton = (text) => {
+      const copyButton = document.createElement("button");
+      copyButton.innerHTML = `<svg id='Copy_24' width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
+
+
+<g transform="matrix(0.5 0 0 0.5 12 12)" >
+<g style="" >
+<g transform="matrix(1 0 0 1 6.5 -2.5)" >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(223,240,254); fill-rule: nonzero; opacity: 1;" transform=" translate(-26.5, -17.5)" d="M 14.5 33.5 L 14.5 1.5 L 30.793 1.5 L 38.5 9.207 L 38.5 33.5 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 6.5 -2.5)" >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(71,136,199); fill-rule: nonzero; opacity: 1;" transform=" translate(-26.5, -17.5)" d="M 30.586 2 L 38 9.414 L 38 33 L 15 33 L 15 2 L 30.586 2 M 31 1 L 14 1 L 14 34 L 39 34 L 39 9 L 31 1 L 31 1 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 14.5 -14.5)" >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(182,220,254); fill-rule: nonzero; opacity: 1;" transform=" translate(-34.5, -5.5)" d="M 30.5 9.5 L 30.5 1.5 L 30.793 1.5 L 38.5 9.207 L 38.5 9.5 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 14.5 -14.5)" >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(71,136,199); fill-rule: nonzero; opacity: 1;" transform=" translate(-34.5, -5.5)" d="M 31 2.414 L 37.586 9 L 31 9 L 31 2.414 M 31 1 L 30 1 L 30 10 L 39 10 L 39 9 L 31 1 L 31 1 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 -6.5 2.5)" >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" transform=" translate(-13.5, -22.5)" d="M 1.5 38.5 L 1.5 6.5 L 17.793 6.5 L 25.5 14.207 L 25.5 38.5 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 -6.5 2.5)" >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(71,136,199); fill-rule: nonzero; opacity: 1;" transform=" translate(-13.5, -22.5)" d="M 17.586 7 L 25 14.414 L 25 38 L 2 38 L 2 7 L 17.586 7 M 18 6 L 1 6 L 1 39 L 26 39 L 26 14 L 18 6 L 18 6 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 1.5 -9.5)" >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" transform=" translate(-8.5, -28.5)" d="M 9.5 25.5 L 9.5 -6.5 L 25.793 -6.5 L 33.5 1.207 L 33.5 25.5 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 1.5 -9.5)" >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(71,136,199); fill-rule: nonzero; opacity: 1;" transform=" translate(-8.5, -28.5)" d="M 25.586 -5 L 33 1.414 L 33 25 L 10 25 L 10 -5 L 25.586 -5 M 26 -6 L 9 -6 L 9 26 L 34 26 L 34 0 L 26 -6 L 26 -6 z" stroke-linecap="round" />
+</g>
+</g>
+
+</svg>`;
+
+      copyButton.classList.add("absolute", "right-0", "top-2", "w-5", "h-5", "text-gray-400", "dark:text-gray-600", "cursor-pointer");
+      copyButton.addEventListener("click", () => {
+        navigator.clipboard.writeText(text).then(function () {
+          console.log('Async: Copying to clipboard was successful!');
+        }, function (err) {
+          console.error('Async: Could not copy text: ', err);
+        });
+      });
+
+      return copyButton;
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderData();
+    });
+  </script>
+
+</body>
+
+</html>
