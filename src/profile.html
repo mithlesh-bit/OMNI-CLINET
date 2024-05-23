@@ -230,7 +230,7 @@
       const token = localStorage.getItem('token');
 
       if (token) {
-        fetch('https://omni-server.onrender.com/api/me', {
+        fetch('http://localhost:8080/api/me', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

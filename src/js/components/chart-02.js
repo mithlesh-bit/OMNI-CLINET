@@ -10,7 +10,7 @@ function generateColors(count) {
 const fetchData = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch("https://omni-server.onrender.com/api/home", {
+    const response = await fetch("http://localhost:8080/api/home", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

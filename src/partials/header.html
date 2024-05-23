@@ -358,7 +358,7 @@
     const token = localStorage.getItem('token');
 
     // Make API call to fetch project name
-    fetch('https://omni-server.onrender.com/api/me', {
+    fetch('http://localhost:8080/api/me', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`

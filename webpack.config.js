@@ -1,30 +1,30 @@
-const path = require('path')
-const glob = require('glob')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path');
+const glob = require('glob');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const INCLUDE_PATTERN = /<include src="(.+)"\s*\/?>(?:<\/include>)?/gi
+const INCLUDE_PATTERN = /<include src="(.+)"\s*\/?>(?:<\/include>)?/gi;
 const processNestedHtml = (content, loaderContext, dir = null) =>
   !INCLUDE_PATTERN.test(content)
     ? content
     : content.replace(INCLUDE_PATTERN, (m, src) => {
-        const filePath = path.resolve(dir || loaderContext.context, src)
-        loaderContext.dependency(filePath)
-        return processNestedHtml(
-          loaderContext.fs.readFileSync(filePath, 'utf8'),
-          loaderContext,
-          path.dirname(filePath)
-        )
-      })
+      const filePath = path.resolve(dir || loaderContext.context, src);
+      loaderContext.dependency(filePath);
+      return processNestedHtml(
+        loaderContext.fs.readFileSync(filePath, 'utf8'),
+        loaderContext,
+        path.dirname(filePath)
+      );
+    });
 
 // HTML generation
-const paths = []
+const paths = [];
 const generateHTMLPlugins = () =>
   glob.sync('./src/*.html').map((dir) => {
-    const filename = path.basename(dir)
+    const filename = path.basename(dir);
 
     if (filename !== '404.html') {
-      paths.push(filename)
+      paths.push(filename);
     }
 
     return new HtmlWebpackPlugin({
@@ -32,13 +32,14 @@ const generateHTMLPlugins = () =>
       template: `./src/${filename}`,
       favicon: `./src/images/favicon.ico`,
       inject: 'body',
-    })
-  })
+    });
+  });
 
 module.exports = {
   mode: 'development',
   entry: './src/js/index.js',
   devServer: {
+    allowedHosts: 'all', // Allow all hosts
     static: {
       directory: path.join(__dirname, './build'),
     },
@@ -118,4 +119,4 @@ module.exports = {
   },
   target: 'web', // fix for "browserslist" error message
   stats: 'errors-only', // suppress irrelevant log messages
-}
+};
