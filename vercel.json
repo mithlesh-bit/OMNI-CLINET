@@ -1,0 +1,21 @@
+{
+    "static": {
+        "public": "src",
+        "headers": [
+            {
+                "source": "/static/(.*)",
+                "headers": [
+                    {
+                        "key": "Cache-Control",
+                        "value": "s-maxage=31536000, immutable"
+                    }
+                ]
+            }
+        ]
+    },
+    "functions": {
+        "api/**/*.js": {
+            "runtime": "nodejs16.x"
+        }
+    }
+}

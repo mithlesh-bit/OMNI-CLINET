@@ -151,7 +151,7 @@
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData);
 
-        fetch('http://localhost:8080/api/signin', {
+        fetch('https://omni-server.onrender.com/api/signin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -175,6 +175,7 @@
             alert('An error occurred. Please try again.');
           });
       });
+
     });
   </script>
 
